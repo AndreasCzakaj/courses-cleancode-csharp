@@ -1,0 +1,11 @@
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/bin/Debug/net8.0/CleanCodeCSharp.deps.json
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/bin/Debug/net8.0/CleanCodeCSharp.dll
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/bin/Debug/net8.0/CleanCodeCSharp.pdb
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/CleanCodeCSharp.GeneratedMSBuildEditorConfig.editorconfig
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/CleanCodeCSharp.AssemblyInfoInputs.cache
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/CleanCodeCSharp.AssemblyInfo.cs
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/CleanCodeCSharp.csproj.CoreCompileInputs.cache
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/CleanCodeCSharp.dll
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/refint/CleanCodeCSharp.dll
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/CleanCodeCSharp.pdb
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/ref/CleanCodeCSharp.dll
