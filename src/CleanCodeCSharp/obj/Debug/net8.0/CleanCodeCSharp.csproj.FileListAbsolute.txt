@@ -9,3 +9,4 @@
 /home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/refint/CleanCodeCSharp.dll
 /home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/CleanCodeCSharp.pdb
 /home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/ref/CleanCodeCSharp.dll
+/home/acj/projects/gfu/CleanCode/csharp/src/CleanCodeCSharp/obj/Debug/net8.0/CleanCodeCSharp.sourcelink.json

@@ -99,3 +99,4 @@
 /home/acj/projects/gfu/CleanCode/csharp/tests/CleanCodeCSharp.Tests/obj/Debug/net8.0/CleanCodeCSharp.Tests.pdb
 /home/acj/projects/gfu/CleanCode/csharp/tests/CleanCodeCSharp.Tests/obj/Debug/net8.0/CleanCodeCSharp.Tests.genruntimeconfig.cache
 /home/acj/projects/gfu/CleanCode/csharp/tests/CleanCodeCSharp.Tests/obj/Debug/net8.0/ref/CleanCodeCSharp.Tests.dll
+/home/acj/projects/gfu/CleanCode/csharp/tests/CleanCodeCSharp.Tests/obj/Debug/net8.0/CleanCodeCSharp.Tests.sourcelink.json
