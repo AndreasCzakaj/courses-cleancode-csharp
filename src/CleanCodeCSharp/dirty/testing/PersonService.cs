@@ -10,8 +10,8 @@ public class PersonService {
         }
 
         UserAccount userAccount = new UserAccount();
-        userAccount.firstName = signUpData.firstName!;
-        userAccount.lastName = signUpData.lastName!;
+        userAccount.firstName = signUpData!.firstName!;
+        userAccount.lastName = signUpData!.lastName!;
         userAccount.state = "new";
         userAccount.id = "1";
         return userAccount;
