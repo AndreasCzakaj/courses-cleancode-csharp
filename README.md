@@ -1,8 +1,5 @@
-# Run all tests
-dotnet test
-
 # Run tests with verbose output
-dotnet test --logger "console;verbosity=detailed"
+dotnet test --logger "console;verbosity=detailed" tests/CleanCodeCSharp.Tests/
 
 # Run specific test project
 dotnet test tests/CleanCodeCSharp.Tests/

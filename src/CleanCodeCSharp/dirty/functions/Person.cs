@@ -1,9 +1,9 @@
 public class Person {
-    private string name;
-    private int age;
-    private string email;
+    private string? name;
+    private int? age;
+    private string? email;
 
-    private Person(string name, int age, string email) {
+    private Person(string? name, int? age, string? email) {
         this.name = name;
         this.age = age;
         this.email = email;
@@ -12,9 +12,9 @@ public class Person {
     public static PersonBuilder Builder() => new PersonBuilder();
 
     public class PersonBuilder {
-        private string name;
-        private int age;
-        private string email;
+        private string? name;
+        private int? age;
+        private string? email;
 
         public PersonBuilder Name(string name) {
             this.name = name;

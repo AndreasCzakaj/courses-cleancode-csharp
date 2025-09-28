@@ -1,16 +1,21 @@
 namespace CleanCodeTraining;
 
 public class Vertical {
+    public string? stuff;
+
     void Two(User user, Company company) {
-        string stuff;
         if (user == null) {
             if (company == null) {
                 stuff = "default";
-            }
+                return;
+            } 
             stuff = company.name + " employee";
+            return;
         }
+
         if (user.salary < 100_000) {
             stuff = "staff";
+            return;
         }
         stuff = "manager";
     }
@@ -21,5 +26,5 @@ class User {
 }
 
 class Company {
-    public string name;
+    public string name = "";
 }

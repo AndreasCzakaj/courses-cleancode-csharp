@@ -4,7 +4,7 @@ namespace FibonacciNamespace
     {
         public int Calculate(int index)
         {
-            return 666;
+            return 0;
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CleanCodeCSharp.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c49b5f8d572bf5f9268f14b1ad9a2b999747fbf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76095891141d2a50ad2b962783ef0254effcff71")]
 [assembly: System.Reflection.AssemblyProductAttribute("CleanCodeCSharp.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CleanCodeCSharp.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
