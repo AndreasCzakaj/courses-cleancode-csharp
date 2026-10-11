@@ -38,3 +38,50 @@ dotnet test --logger "console;verbosity=detailed"
 # Watch mode (re-runs the tests on file changes)
 dotnet watch test --project tests/CleanCodeCSharp.Tests/
 ```
+
+## User Self Service: Login (`Dirty/Uss`)
+
+`src/CleanCodeCSharp/Dirty/Uss/Server.cs` implements the login. It works, but everything happens in the
+handler of the route `/uss/login`: validation, database calls, error handling.
+There are no tests.
+
+Scenarios:
+
+* Credentials (username + password) have invalid syntax => 400
+  * username: min 8, max 20 chars; `[a-zA-Z0-9\-_]`
+  * password: min 12, max 32 chars; `[a-zA-Z0-9\-_.,+]`
+* Credentials have valid syntax, but no such username => 401
+* Username exists, but wrong password => SAME(!) error 401
+* Credentials OK, but account status is not "verified" => 400
+* All OK => 200 + session object including account ID, username, email
+
+### Your task
+
+* Extract functions and classes
+* Separate Operation code (logic: validation, password check, decisions) from
+  Integration code (HTTP, database)
+* Add tests along the way
+* Done when: all scenarios are covered by tests
+
+### Run it
+
+```
+# SQLite in memory + some accounts, see the console output
+dotnet run --project src/CleanCodeCSharp
+
+# if port 3000 is taken (PowerShell: $env:PORT=3055; dotnet run --project src/CleanCodeCSharp)
+PORT=3055 dotnet run --project src/CleanCodeCSharp
+```
+
+```
+curl -i -X POST localhost:3000/uss/login \
+  -H 'Content-Type: application/json' \
+  -d '{"username": "alice_verified", "password": "Correct-Horse_42"}'
+```
+
+PowerShell:
+
+```
+Invoke-RestMethod -Method Post -Uri http://localhost:3000/uss/login -ContentType 'application/json' `
+  -Body '{"username": "alice_verified", "password": "Correct-Horse_42"}'
+```
