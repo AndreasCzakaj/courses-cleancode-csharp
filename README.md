@@ -39,11 +39,22 @@ dotnet test --logger "console;verbosity=detailed"
 dotnet watch test --project tests/CleanCodeCSharp.Tests/
 ```
 
-## User Self Service: Login (`Dirty/Uss`)
+## User Self Service: Login (`Clean/Uss`)
 
-`src/CleanCodeCSharp/Dirty/Uss/Server.cs` implements the login. It works, but everything happens in the
-handler of the route `/uss/login`: validation, database calls, error handling.
-There are no tests.
+The solution of the legacy code task: on branch `main`, `src/CleanCodeCSharp/Dirty/Uss/Server.cs` does
+everything in the handler of the route `/uss/login`. Here, the code is split up and tested:
+
+| File | Kind | What |
+|------|------|------|
+| `Validation.cs` | Operation | syntax of username and password |
+| `Password.cs` | Operation | hash and verify passwords |
+| `UserSelfService.cs` | Operation | the login scenarios |
+| `ControllerUtils.cs` | Operation | exceptions => HTTP status + message |
+| `LoginController.cs` | Integration | request body => service => `HttpResult` |
+| `IAccountDao.cs` | Boundary | interface to the database |
+| `AccountDaoDictionaryImpl.cs`, `AccountDaoThrowingImpl.cs` | Boundary | fakes for the tests |
+| `AccountDaoSqliteImpl.cs` | Integration | SQLite |
+| `Server.cs` | Integration | wires the parts, defines the route, starts ASP.NET |
 
 Scenarios:
 
@@ -55,13 +66,18 @@ Scenarios:
 * Credentials OK, but account status is not "verified" => 400
 * All OK => 200 + session object including account ID, username, email
 
-### Your task
+### Tests
 
-* Extract functions and classes
-* Separate Operation code (logic: validation, password check, decisions) from
-  Integration code (HTTP, database)
-* Add tests along the way
-* Done when: all scenarios are covered by tests
+```
+# all tests of the login
+dotnet test --filter "FullyQualifiedName~Clean.Uss"
+
+# unit tests only: no database, no HTTP
+dotnet test --filter "FullyQualifiedName~Clean.Uss&TestCategory!=Integration"
+
+# integration tests only (Clean/Uss/Integration): SQLite in memory, HTTP server
+dotnet test --filter "TestCategory=Integration"
+```
 
 ### Run it
 
