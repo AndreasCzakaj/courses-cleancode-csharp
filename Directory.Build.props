@@ -1,0 +1,13 @@
+<Project>
+
+  <!-- Shared settings for all projects in this solution -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <!-- Lets the code run on a newer .NET runtime (9, 10, ...) if .NET 8 is not installed -->
+    <RollForward>Major</RollForward>
+    <LangVersion>12</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
