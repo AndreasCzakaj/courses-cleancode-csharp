@@ -16,4 +16,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Clean\FunWithFlags\UuidGeneratorUpperCaseDecorator.cs" />
+    <Compile Remove="Clean\FunWithFlags\UuidGeneratorWithDashesDecorator.cs" />
+    <Compile Remove="Examples\SwitchEx\Aquaman.cs" />
+    <Compile Remove="Examples\SwitchEx\Cyclops.cs" />
+  </ItemGroup>
+
 </Project>

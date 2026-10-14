@@ -1,8 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
 
 namespace CleanCodeCSharp.Dirty.Uss;
 
@@ -10,127 +10,44 @@ public class Server
 {
     public static void Run()
     {
-        var app = WebApplication.CreateBuilder().Build();
+        var app = WebApplication.CreateBuilder().Build(); // int
 
-        app.MapPost("/uss/login", async (HttpContext ctx) =>
+        app.MapPost("/uss/login", async (HttpContext ctx) => // int
         {
-            SqliteConnection? c = null;
+            SqliteConnection? c = null; // int
             try
             {
-                var b = await new StreamReader(ctx.Request.Body).ReadToEndAsync();
-                JsonElement d = default;
-                if (b != "")
+                var b = await new StreamReader(ctx.Request.Body).ReadToEndAsync(); // int
+
+                if (b == "")
                 {
-                    d = JsonDocument.Parse(b).RootElement;
+                    throw new JsonException("invalid json");
                 }
-                if (d.ValueKind == JsonValueKind.Object)
+
+                var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(b);
+                var username = values?.GetValueOrDefault("username");
+                var password = values?.GetValueOrDefault("password");
+                var service = new LoginService();
+
+                var result = await service.Login(username, password);
+                if (result.errorType == ErrorTypes.OK)
                 {
-                    if (d.TryGetProperty("username", out var u) && u.ValueKind == JsonValueKind.String)
-                    {
-                        if (u.GetString()!.Length >= 8)
-                        {
-                            if (u.GetString()!.Length <= 20)
-                            {
-                                if (Regex.IsMatch(u.GetString()!, @"^[a-zA-Z0-9\-_]+\z"))
-                                {
-                                    if (d.TryGetProperty("password", out var p) && p.ValueKind == JsonValueKind.String)
-                                    {
-                                        if (p.GetString()!.Length >= 12 && p.GetString()!.Length <= 32)
-                                        {
-                                            if (Regex.IsMatch(p.GetString()!, @"^[a-zA-Z0-9\-_.,+]+\z"))
-                                            {
-                                                // check db
-                                                c = new SqliteConnection(
-                                                    Environment.GetEnvironmentVariable("USS_DB") ?? "Data Source=uss.db"
-                                                );
-                                                await c.OpenAsync();
-                                                var cmd = c.CreateCommand();
-                                                cmd.CommandText =
-                                                    "SELECT id, username, password_hash, email, status FROM accounts WHERE username = $u";
-                                                cmd.Parameters.AddWithValue("$u", u.GetString());
-                                                var r = await cmd.ExecuteReaderAsync();
-                                                if (await r.ReadAsync())
-                                                {
-                                                    var tmp = r.GetString(2).Split(":");
-                                                    var h = Convert.ToHexString(Rfc2898DeriveBytes.Pbkdf2(
-                                                        p.GetString()!, Encoding.UTF8.GetBytes(tmp[0]), 210_000,
-                                                        HashAlgorithmName.SHA512, 64)).ToLower();
-                                                    if (h == tmp[1])
-                                                    {
-                                                        if (r.GetString(4) == "verified")
-                                                        {
-                                                            ctx.Response.StatusCode = 200;
-                                                            await ctx.Response.WriteAsJsonAsync(new
-                                                            {
-                                                                accountId = r.GetString(0),
-                                                                username = r.GetString(1),
-                                                                email = r.GetString(3),
-                                                            });
-                                                        }
-                                                        else
-                                                        {
-                                                            ctx.Response.StatusCode = 400;
-                                                            await ctx.Response.WriteAsJsonAsync(new { error = "account not verified" });
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        ctx.Response.StatusCode = 401;
-                                                        await ctx.Response.WriteAsJsonAsync(new { error = "unknown username or wrong password" });
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    ctx.Response.StatusCode = 401;
-                                                    await ctx.Response.WriteAsJsonAsync(new { error = "unknown username or wrong password" });
-                                                }
-                                            }
-                                            else
-                                            {
-                                                ctx.Response.StatusCode = 400;
-                                                await ctx.Response.WriteAsJsonAsync(new { error = "invalid: password" });
-                                            }
-                                        }
-                                        else
-                                        {
-                                            ctx.Response.StatusCode = 400;
-                                            await ctx.Response.WriteAsJsonAsync(new { error = "invalid: password" });
-                                        }
-                                    }
-                                    else
-                                    {
-                                        ctx.Response.StatusCode = 400;
-                                        await ctx.Response.WriteAsJsonAsync(new { error = "invalid: password" });
-                                    }
-                                }
-                                else
-                                {
-                                    ctx.Response.StatusCode = 400;
-                                    await ctx.Response.WriteAsJsonAsync(new { error = "invalid: username" });
-                                }
-                            }
-                            else
-                            {
-                                ctx.Response.StatusCode = 400;
-                                await ctx.Response.WriteAsJsonAsync(new { error = "invalid: username" });
-                            }
-                        }
-                        else
-                        {
-                            ctx.Response.StatusCode = 400;
-                            await ctx.Response.WriteAsJsonAsync(new { error = "invalid: username" });
-                        }
-                    }
-                    else
-                    {
-                        ctx.Response.StatusCode = 400;
-                        await ctx.Response.WriteAsJsonAsync(new { error = "invalid: username" });
-                    }
+                    ctx.Response.StatusCode = 200;
+                    await ctx.Response.WriteAsJsonAsync(new { error = result.error });
+                }
+                else if (result.errorType == ErrorTypes.Validation)
+                {
+                    ctx.Response.StatusCode = 400;
+                    await ctx.Response.WriteAsJsonAsync(result.UserSession);
+                }
+                else if (result.errorType == ErrorTypes.Auth)
+                {
+                    ctx.Response.StatusCode = 401;
+                    await ctx.Response.WriteAsJsonAsync(result.UserSession);
                 }
                 else
                 {
-                    ctx.Response.StatusCode = 400;
-                    await ctx.Response.WriteAsJsonAsync(new { error = "invalid: username" });
+                    ctx.Response.StatusCode = 500;
                 }
             }
             catch (JsonException)
@@ -158,3 +75,4 @@ public class Server
         app.Run("http://localhost:" + port);
     }
 }
+
